@@ -1,18 +1,19 @@
 import { defineConfig } from 'vite'
-import mdx from '@mdx-js/rollup'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-
+import mdx from '@mdx-js/rollup'
+import { babel } from '@rollup/plugin-babel'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue({ include: [/\.vue$/, /\.mdx$/] }),
-    vueJsx({
-      include: [/\.vue$/, /\.mdx$/]
-    }),
+    vue(),
     mdx({
       jsx: true,
     }),
+    babel({
+      // Also run on what used to be `.mdx` (but is now JS):
+      extensions: ['.js', '.jsx', '.cjs', '.mjs', '.md', '.mdx'],
+      "plugins": ["@vue/babel-plugin-jsx"]
+    })
   ]
 })
